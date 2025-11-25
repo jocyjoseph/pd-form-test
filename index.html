@@ -54,7 +54,6 @@
             border-radius: 6px; 
             margin-bottom: 20px;
         }
-        /* Loader for dropdowns */
         .fetching-data { color: #e65100; font-size: 0.9em; font-weight: bold; display:none; }
     </style>
 </head>
@@ -349,7 +348,8 @@
 
     cSelect.addEventListener('change', () => {
         nSelect.innerHTML = '<option value="">-- സ്കൂളിൻ്റെ പേര് തിരഞ്ഞെടുക്കുക --</option>';
-        const filtered = schoolData.filter(x => x.district === dSelect.value && x.code === cSelect.value); // Fixed value vs text
+        // FIX: FORCE STRING COMPARISON
+        const filtered = schoolData.filter(x => String(x.code) === String(cSelect.value));
         filtered.forEach(s => {
             nSelect.appendChild(new Option(s.name, s.name));
             nSelect.value = s.name;
