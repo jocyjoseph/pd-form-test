@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PD Account Statement Form</title>
+    <style>
+        /* CSS from your original request */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f6; 
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            margin: 0;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 750px;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+        }
+        h2 { color: #db3636; font-size: 1.2em; margin-top: 35px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        h3 { color: #007bff; font-size: 1.1em; margin-top: 10px; margin-bottom: 15px; font-weight: 600; }
+        label { display: block; margin-top: 15px; font-size: 0.95em; color: #444; margin-bottom: 5px; line-height: 1.5; }
+        .total-display {
+            font-weight: 600; margin-top: 20px; padding: 15px;
+            background-color: #eaf4ff; border: 1px solid #cce0ff;
+            border-radius: 6px; display: flex; justify-content: space-between;
+        }
+        input[type="number"], select { 
+            width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px;
+            box-sizing: border-box; transition: border-color 0.3s; background-color: #fff;
+        }
+        input[type="radio"] { margin-right: 5px; transform: scale(1.2); }
+        .conditional-section {
+            display: none; padding: 20px; margin-top: 15px;
+            background-color: #fcfcfc; border: 1px solid #e0e0e0;
+            border-left: 4px solid #007bff; border-radius: 4px;
+        }
+        button {
+            background-color: #28a745; color: white; padding: 15px; border: none;
+            border-radius: 6px; cursor: pointer; font-size: 1.2em; font-weight: 600;
+            width: 100%; margin-top: 40px;
+        }
+        button:hover { background-color: #218838; }
+        button.loading { opacity: 0.6; cursor: wait; }
+
+        /* ADDED INSTRUCTION STYLES BACK */
+        .instructions {
+            background-color: #fffbe6; 
+            border: 1px solid #ffe0b2; 
+            padding: 15px; 
+            border-radius: 6px; 
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2 style="text-align: center; border:none; margin-top:0; color:#333;">പി.ഡി. അക്കൗണ്ട് സ്റ്റേറ്റ്മെന്റ് (2021-2024)</h2>
+
+    <div class="instructions">
+        <h3 style="color: #e65100; margin-top: 0;">⚠️ പ്രധാന നിർദ്ദേശങ്ങൾ</h3>
+        <ul style="margin-top: 10px; padding-left: 20px; color: #4d4ae4;">
+            <li>ഓരോ ചോദ്യവും <b>വ്യക്തമായി മനസ്സിലാക്കിയതിനു ശേഷം മാത്രം</b> ഉത്തരങ്ങൾ പൂരിപ്പിക്കുക.</li>
+            <li>തുകകൾ ടൈപ്പ് ചെയ്യുമ്പോൾ <b>തെറ്റുകളില്ലായെന്ന് വീണ്ടും ഉറപ്പുവരുത്തുക</b>.</li>
+            <li>തുകകൾ പൂജ്യമാണെങ്കിൽ (<b>Zero</b>) <b>"0"</b> എന്ന് രേഖപ്പെടുത്തേണ്ടതാണ്.</li>
+        </ul>
+    </div>
+
+    <form id="submissionForm">
+        
+        <h2 style="color: #333;">ഭാഗം 1: സ്കൂൾ സംബന്ധിച്ച വിവരങ്ങൾ</h2>
+        <label>ജില്ല:</label>
+        <select id="district" name="District" required></select>
+        <label>സ്കൂൾ കോഡ്:</label>
+        <select id="schoolCode" name="School_Code" required><option value="">-- സ്കൂൾ കോഡ് തിരഞ്ഞെടുക്കുക --</option></select>
+        <label>സ്കൂളിൻ്റെ പേര്:</label>
+        <select id="schoolName" name="School_Name" required><option value="">-- സ്കൂളിൻ്റെ പേര് തിരഞ്ഞെടുക്കുക --</option></select>
+
+        <div class="exam-section">
+            <h2>2021 ഒന്നാം വർഷ പരീക്ഷ (സെപ്റ്റമ്പർ 2021)</h2>
+            <label>ഈ പരീക്ഷയ്ക്ക് നിങ്ങൾക്ക് അലോട്ട്മെന്റ് ലഭിച്ചിട്ടുണ്ടോ?</label>
+            <div style="margin-top: 10px;">
+                <input type="radio" name="2021_Sept_Status" value="Yes" onchange="toggle('2021_Sept', true)" required> ഉണ്ട്
+                <input type="radio" name="2021_Sept_Status" value="No" onchange="toggle('2021_Sept', false)"> ഇല്ല
+            </div>
+
+            <div id="2021_Sept" class="conditional-section">
+                <h3>പരീക്ഷാ നടത്തിപ്പിന് ചെലവായ തുകയുടെ ഇനം തിരിച്ചുള്ള കണക്ക്</h3>
+                
+                <label>1. കണ്ടിൻജൻസി ഇനത്തിൽ ചെലവാക്കിയ മൊത്തം തുക.:</label>
+                <input type="number" name="2021_Sept_Contingency" class="calc-2021_Sept" oninput="calc('2021_Sept')" min="0" step="0.01">
+
+                <label>2. നൈറ്റ് വാച്ച്മാനുള്ള പ്രതിഫലത്തിനായി ചെലവഴിച്ച മൊത്തം തുക.:</label>
+                <input type="number" name="2021_Sept_Remuneration" class="calc-2021_Sept" oninput="calc('2021_Sept')" min="0" step="0.01">
+
+                <label>3. അധ്യാപകർക്ക് നൽകേണ്ട പ്രതിഫലത്തിനായി ആവശ്യമായ മൊത്തം തുക (ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഡെപ്യൂട്ടി ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഇൻവിജിലേറ്റർ, ഇൻ്റേണൽ, എക്സ്റ്റേണൽ തുടങ്ങിയവർക്ക്).:</label>
+                <input type="number" name="2021_Sept_Duty" class="calc-2021_Sept" oninput="calc('2021_Sept')" min="0" step="0.01">
+
+                <label>4. TA/DA-യ്‌ക്കായി ആവശ്യമായ ആകെ തുക:</label>
+                <input type="number" name="2021_Sept_TADA" class="calc-2021_Sept" oninput="calc('2021_Sept')" min="0" step="0.01">
+
+                <div class="total-display">
+                    <span>5. ആകെ ചെലവ്:</span> <span id="total_2021_Sept">₹0.00</span>
+                </div>
+                <input type="hidden" name="2021_Sept_GrandTotal" id="val_2021_Sept">
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <h2>2021 ഒന്നാം വർഷ ഇംപ്രൂവ്മെൻറ് പരീക്ഷ (ജനുവരി 2022)</h2>
+            <h5>കോവിഡ് കാലമായതിനാൽ 2021ൽ  നടക്കേണ്ടിയിരുന്ന ഈ പരീക്ഷ 2022 ജനുവരിയിലാണ് നടന്നത് എന്ന് ഓർമിക്കുമല്ലോ!</h5>
+            <label>ഈ പരീക്ഷയ്ക്ക് നിങ്ങൾക്ക് അലോട്ട്മെന്റ് ലഭിച്ചിട്ടുണ്ടോ?</label>
+            <div style="margin-top: 10px;">
+                <input type="radio" name="2022_Jan_Status" value="Yes" onchange="toggle('2022_Jan', true)" required> ഉണ്ട്
+                <input type="radio" name="2022_Jan_Status" value="No" onchange="toggle('2022_Jan', false)"> ഇല്ല
+            </div>
+
+            <div id="2022_Jan" class="conditional-section">
+                <h3>പരീക്ഷാ നടത്തിപ്പിന് ചെലവായ തുകയുടെ ഇനം തിരിച്ചുള്ള കണക്ക്</h3>
+
+                <label>1. കണ്ടിൻജൻസി ഇനത്തിൽ ചെലവാക്കിയ മൊത്തം തുക.:</label>
+                <input type="number" name="2022_Jan_Contingency" class="calc-2022_Jan" oninput="calc('2022_Jan')" min="0" step="0.01">
+
+                <label>2. നൈറ്റ് വാച്ച്മാനുള്ള പ്രതിഫലത്തിനായി ചെലവഴിച്ച മൊത്തം തുക.:</label>
+                <input type="number" name="2022_Jan_Remuneration" class="calc-2022_Jan" oninput="calc('2022_Jan')" min="0" step="0.01">
+
+                <label>3. അധ്യാപകർക്ക് നൽകേണ്ട പ്രതിഫലത്തിനായി ആവശ്യമായ മൊത്തം തുക (ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഡെപ്യൂട്ടി ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഇൻവിജിലേറ്റർ, ഇൻ്റേണൽ, എക്സ്റ്റേണൽ തുടങ്ങിയവർക്ക്).:</label>
+                <input type="number" name="2022_Jan_Duty" class="calc-2022_Jan" oninput="calc('2022_Jan')" min="0" step="0.01">
+
+                <label>4. TA/DA-യ്‌ക്കായി ആവശ്യമായ ആകെ തുക:</label>
+                <input type="number" name="2022_Jan_TADA" class="calc-2022_Jan" oninput="calc('2022_Jan')" min="0" step="0.01">
+
+                <div class="total-display">
+                    <span>5. ആകെ ചെലവ്:</span> <span id="total_2022_Jan">₹0.00</span>
+                </div>
+                <input type="hidden" name="2022_Jan_GrandTotal" id="val_2022_Jan">
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <h2>2022 ഒന്നാം വർഷ പരീക്ഷ (ജൂൺ), രണ്ടാം വർഷ പരീക്ഷ (മാർച്ച്)</h2>
+            <label>ഈ പരീക്ഷ/കൾക്ക് പി.ഡി. അക്കൗണ്ടിൽ നിന്ന് നിങ്ങൾക്ക് അലോട്ട്മെന്റ് ലഭിച്ചിട്ടുണ്ടോ?</label>
+            <div style="margin-top: 10px;">
+                <input type="radio" name="2022_Reg_Status" value="Yes" onchange="toggle('2022_Reg', true)" required> ഉണ്ട്
+                <input type="radio" name="2022_Reg_Status" value="No" onchange="toggle('2022_Reg', false)"> ഇല്ല
+            </div>
+
+            <div id="2022_Reg" class="conditional-section">
+                <h3>പരീക്ഷാ നടത്തിപ്പിന് ചെലവായ തുകയുടെ ഇനം തിരിച്ചുള്ള കണക്ക്</h3>
+                <label>1. കണ്ടിൻജൻസി ഇനത്തിൽ ചെലവാക്കിയ മൊത്തം തുക.:</label>
+                <input type="number" name="2022_Reg_Contingency" class="calc-2022_Reg" oninput="calc('2022_Reg')" min="0" step="0.01">
+
+                <label>2. നൈറ്റ് വാച്ച്മാനുള്ള പ്രതിഫലത്തിനായി ചെലവഴിച്ച മൊത്തം തുക.:</label>
+                <input type="number" name="2022_Reg_Remuneration" class="calc-2022_Reg" oninput="calc('2022_Reg')" min="0" step="0.01">
+
+                <label>3. അധ്യാപകർക്ക് നൽകേണ്ട പ്രതിഫലത്തിനായി ആവശ്യമായ മൊത്തം തുക (ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഡെപ്യൂട്ടി ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഇൻവിജിലേറ്റർ, ഇൻ്റേണൽ, എക്സ്റ്റേണൽ തുടങ്ങിയവർക്ക്).:</label>
+                <input type="number" name="2022_Reg_Duty" class="calc-2022_Reg" oninput="calc('2022_Reg')" min="0" step="0.01">
+
+                <label>4. TA/DA-യ്‌ക്കായി ആവശ്യമായ ആകെ തുക:</label>
+                <input type="number" name="2022_Reg_TADA" class="calc-2022_Reg" oninput="calc('2022_Reg')" min="0" step="0.01">
+
+                <div class="total-display">
+                    <span>5. ആകെ ചെലവ്:</span> <span id="total_2022_Reg">₹0.00</span>
+                </div>
+                <input type="hidden" name="2022_Reg_GrandTotal" id="val_2022_Reg">
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <h2>2022 സേ പരീക്ഷ (ജൂലൈ)</h2>
+            <label>ഈ പരീക്ഷയ്ക്ക് പി.ഡി. അക്കൗണ്ടിൽ നിന്ന് നിങ്ങൾക്ക് അലോട്ട്മെന്റ് ലഭിച്ചിട്ടുണ്ടോ?</label>
+            <div style="margin-top: 10px;">
+                <input type="radio" name="2022_SAY_Status" value="Yes" onchange="toggle('2022_SAY', true)" required> ഉണ്ട്
+                <input type="radio" name="2022_SAY_Status" value="No" onchange="toggle('2022_SAY', false)"> ഇല്ല
+            </div>
+
+            <div id="2022_SAY" class="conditional-section">
+                <h3>പരീക്ഷാ നടത്തിപ്പിന് ചെലവായ തുകയുടെ ഇനം തിരിച്ചുള്ള കണക്ക്</h3>
+                <label>1. കണ്ടിൻജൻസി ഇനത്തിൽ ചെലവാക്കിയ മൊത്തം തുക.:</label>
+                <input type="number" name="2022_SAY_Contingency" class="calc-2022_SAY" oninput="calc('2022_SAY')" min="0" step="0.01">
+
+                <label>2. നൈറ്റ് വാച്ച്മാനുള്ള പ്രതിഫലത്തിനായി ചെലവഴിച്ച മൊത്തം തുക.:</label>
+                <input type="number" name="2022_SAY_Remuneration" class="calc-2022_SAY" oninput="calc('2022_SAY')" min="0" step="0.01">
+
+                <label>3. അധ്യാപകർക്ക് നൽകേണ്ട പ്രതിഫലത്തിനായി ആവശ്യമായ മൊത്തം തുക (ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഡെപ്യൂട്ടി ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഇൻവിജിലേറ്റർ, ഇൻ്റേണൽ, എക്സ്റ്റേണൽ തുടങ്ങിയവർക്ക്).:</label>
+                <input type="number" name="2022_SAY_Duty" class="calc-2022_SAY" oninput="calc('2022_SAY')" min="0" step="0.01">
+
+                <label>4. TA/DA-യ്‌ക്കായി ആവശ്യമായ ആകെ തുക:</label>
+                <input type="number" name="2022_SAY_TADA" class="calc-2022_SAY" oninput="calc('2022_SAY')" min="0" step="0.01">
+
+                <div class="total-display">
+                    <span>5. ആകെ ചെലവ്:</span> <span id="total_2022_SAY">₹0.00</span>
+                </div>
+                <input type="hidden" name="2022_SAY_GrandTotal" id="val_2022_SAY">
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <h2>2022 ഇംപ്രൂവ്മെന്റ് പരീക്ഷ (ഒക്ടോബർ)</h2>
+            <label>ഈ പരീക്ഷയ്ക്ക് പി.ഡി. അക്കൗണ്ടിൽ നിന്ന് നിങ്ങൾക്ക് അലോട്ട്മെന്റ് ലഭിച്ചിട്ടുണ്ടോ?</label>
+            <div style="margin-top: 10px;">
+                <input type="radio" name="2022_Imp_Status" value="Yes" onchange="toggle('2022_Imp', true)" required> ഉണ്ട്
+                <input type="radio" name="2022_Imp_Status" value="No" onchange="toggle('2022_Imp', false)"> ഇല്ല
+            </div>
+
+            <div id="2022_Imp" class="conditional-section">
+                <h3>പരീക്ഷാ നടത്തിപ്പിന് ചെലവായ തുകയുടെ ഇനം തിരിച്ചുള്ള കണക്ക്</h3>
+                <label>1. കണ്ടിൻജൻസി ഇനത്തിൽ ചെലവാക്കിയ മൊത്തം തുക.:</label>
+                <input type="number" name="2022_Imp_Contingency" class="calc-2022_Imp" oninput="calc('2022_Imp')" min="0" step="0.01">
+
+                <label>2. നൈറ്റ് വാച്ച്മാനുള്ള പ്രതിഫലത്തിനായി ചെലവഴിച്ച മൊത്തം തുക.:</label>
+                <input type="number" name="2022_Imp_Remuneration" class="calc-2022_Imp" oninput="calc('2022_Imp')" min="0" step="0.01">
+
+                <label>3. അധ്യാപകർക്ക് നൽകേണ്ട പ്രതിഫലത്തിനായി ആവശ്യമായ മൊത്തം തുക (ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഡെപ്യൂട്ടി ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഇൻവിജിലേറ്റർ, ഇൻ്റേണൽ, എക്സ്റ്റേണൽ തുടങ്ങിയവർക്ക്).:</label>
+                <input type="number" name="2022_Imp_Duty" class="calc-2022_Imp" oninput="calc('2022_Imp')" min="0" step="0.01">
+
+                <label>4. TA/DA-യ്‌ക്കായി ആവശ്യമായ ആകെ തുക:</label>
+                <input type="number" name="2022_Imp_TADA" class="calc-2022_Imp" oninput="calc('2022_Imp')" min="0" step="0.01">
+
+                <div class="total-display">
+                    <span>5. ആകെ ചെലവ്:</span> <span id="total_2022_Imp">₹0.00</span>
+                </div>
+                <input type="hidden" name="2022_Imp_GrandTotal" id="val_2022_Imp">
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <h2>2023 ഒന്നും രണ്ടും വർഷ പരീക്ഷകൾ (മാർച്ച്)</h2>
+            <label>ഈ പരീക്ഷ/കൾക്ക് പി.ഡി. അക്കൗണ്ടിൽ നിന്ന് നിങ്ങൾക്ക് അലോട്ട്മെന്റ് ലഭിച്ചിട്ടുണ്ടോ?</label>
+            <div style="margin-top: 10px;">
+                <input type="radio" name="2023_Mar_Status" value="Yes" onchange="toggle('2023_Mar', true)" required> ഉണ്ട്
+                <input type="radio" name="2023_Mar_Status" value="No" onchange="toggle('2023_Mar', false)"> ഇല്ല
+            </div>
+
+            <div id="2023_Mar" class="conditional-section">
+                <h3>പരീക്ഷാ നടത്തിപ്പിന് ചെലവായ തുകയുടെ ഇനം തിരിച്ചുള്ള കണക്ക്</h3>
+                <label>1. കണ്ടിൻജൻസി ഇനത്തിൽ ചെലവാക്കിയ മൊത്തം തുക.:</label>
+                <input type="number" name="2023_Mar_Contingency" class="calc-2023_Mar" oninput="calc('2023_Mar')" min="0" step="0.01">
+
+                <label>2. നൈറ്റ് വാച്ച്മാനുള്ള പ്രതിഫലത്തിനായി ചെലവഴിച്ച മൊത്തം തുക.:</label>
+                <input type="number" name="2023_Mar_Remuneration" class="calc-2023_Mar" oninput="calc('2023_Mar')" min="0" step="0.01">
+
+                <label>3. അധ്യാപകർക്ക് നൽകേണ്ട പ്രതിഫലത്തിനായി ആവശ്യമായ മൊത്തം തുക (ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഡെപ്യൂട്ടി ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഇൻവിജിലേറ്റർ, ഇൻ്റേണൽ, എക്സ്റ്റേണൽ തുടങ്ങിയവർക്ക്).:</label>
+                <input type="number" name="2023_Mar_Duty" class="calc-2023_Mar" oninput="calc('2023_Mar')" min="0" step="0.01">
+
+                <label>4. TA/DA-യ്‌ക്കായി ആവശ്യമായ ആകെ തുക:</label>
+                <input type="number" name="2023_Mar_TADA" class="calc-2023_Mar" oninput="calc('2023_Mar')" min="0" step="0.01">
+
+                <div class="total-display">
+                    <span>5. ആകെ ചെലവ്:</span> <span id="total_2023_Mar">₹0.00</span>
+                </div>
+                <input type="hidden" name="2023_Mar_GrandTotal" id="val_2023_Mar">
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <h2>2023 സേ പരീക്ഷ (ജൂൺ)</h2>
+            <label>ഈ പരീക്ഷയ്ക്ക് പി.ഡി. അക്കൗണ്ടിൽ നിന്ന് നിങ്ങൾക്ക് അലോട്ട്മെന്റ് ലഭിച്ചിട്ടുണ്ടോ?</label>
+            <div style="margin-top: 10px;">
+                <input type="radio" name="2023_SAY_Status" value="Yes" onchange="toggle('2023_SAY', true)" required> ഉണ്ട്
+                <input type="radio" name="2023_SAY_Status" value="No" onchange="toggle('2023_SAY', false)"> ഇല്ല
+            </div>
+
+            <div id="2023_SAY" class="conditional-section">
+                <h3>പരീക്ഷാ നടത്തിപ്പിന് ചെലവായ തുകയുടെ ഇനം തിരിച്ചുള്ള കണക്ക്</h3>
+                <label>1. കണ്ടിൻജൻസി ഇനത്തിൽ ചെലവാക്കിയ മൊത്തം തുക.:</label>
+                <input type="number" name="2023_SAY_Contingency" class="calc-2023_SAY" oninput="calc('2023_SAY')" min="0" step="0.01">
+
+                <label>2. നൈറ്റ് വാച്ച്മാനുള്ള പ്രതിഫലത്തിനായി ചെലവഴിച്ച മൊത്തം തുക.:</label>
+                <input type="number" name="2023_SAY_Remuneration" class="calc-2023_SAY" oninput="calc('2023_SAY')" min="0" step="0.01">
+
+                <label>3. അധ്യാപകർക്ക് നൽകേണ്ട പ്രതിഫലത്തിനായി ആവശ്യമായ മൊത്തം തുക (ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഡെപ്യൂട്ടി ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഇൻവിജിലേറ്റർ, ഇൻ്റേണൽ, എക്സ്റ്റേണൽ തുടങ്ങിയവർക്ക്).:</label>
+                <input type="number" name="2023_SAY_Duty" class="calc-2023_SAY" oninput="calc('2023_SAY')" min="0" step="0.01">
+
+                <label>4. TA/DA-യ്‌ക്കായി ആവശ്യമായ ആകെ തുക:</label>
+                <input type="number" name="2023_SAY_TADA" class="calc-2023_SAY" oninput="calc('2023_SAY')" min="0" step="0.01">
+
+                <div class="total-display">
+                    <span>5. ആകെ ചെലവ്:</span> <span id="total_2023_SAY">₹0.00</span>
+                </div>
+                <input type="hidden" name="2023_SAY_GrandTotal" id="val_2023_SAY">
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <h2>2023 ഇംപ്രൂവ്മെന്റ് പരീക്ഷ (സെപ്റ്റമ്പർ)</h2>
+            <label>ഈ പരീക്ഷയ്ക്ക് പി.ഡി. അക്കൗണ്ടിൽ നിന്ന് നിങ്ങൾക്ക് അലോട്ട്മെന്റ് ലഭിച്ചിട്ടുണ്ടോ?</label>
+            <div style="margin-top: 10px;">
+                <input type="radio" name="2023_Imp_Status" value="Yes" onchange="toggle('2023_Imp', true)" required> ഉണ്ട്
+                <input type="radio" name="2023_Imp_Status" value="No" onchange="toggle('2023_Imp', false)"> ഇല്ല
+            </div>
+
+            <div id="2023_Imp" class="conditional-section">
+                <h3>പരീക്ഷാ നടത്തിപ്പിന് ചെലവായ തുകയുടെ ഇനം തിരിച്ചുള്ള കണക്ക്</h3>
+                <label>1. കണ്ടിൻജൻസി ഇനത്തിൽ ചെലവാക്കിയ മൊത്തം തുക.:</label>
+                <input type="number" name="2023_Imp_Contingency" class="calc-2023_Imp" oninput="calc('2023_Imp')" min="0" step="0.01">
+
+                <label>2. നൈറ്റ് വാച്ച്മാനുള്ള പ്രതിഫലത്തിനായി ചെലവഴിച്ച മൊത്തം തുക.:</label>
+                <input type="number" name="2023_Imp_Remuneration" class="calc-2023_Imp" oninput="calc('2023_Imp')" min="0" step="0.01">
+
+                <label>3. അധ്യാപകർക്ക് നൽകേണ്ട പ്രതിഫലത്തിനായി ആവശ്യമായ മൊത്തം തുക (ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഡെപ്യൂട്ടി ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഇൻവിജിലേറ്റർ, ഇൻ്റേണൽ, എക്സ്റ്റേണൽ തുടങ്ങിയവർക്ക്).:</label>
+                <input type="number" name="2023_Imp_Duty" class="calc-2023_Imp" oninput="calc('2023_Imp')" min="0" step="0.01">
+
+                <label>4. TA/DA-യ്‌ക്കായി ആവശ്യമായ ആകെ തുക:</label>
+                <input type="number" name="2023_Imp_TADA" class="calc-2023_Imp" oninput="calc('2023_Imp')" min="0" step="0.01">
+
+                <div class="total-display">
+                    <span>5. ആകെ ചെലവ്:</span> <span id="total_2023_Imp">₹0.00</span>
+                </div>
+                <input type="hidden" name="2023_Imp_GrandTotal" id="val_2023_Imp">
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <h2>2024 ഒന്നും രണ്ടും വർഷ പരീക്ഷകൾ (മാർച്ച്)</h2>
+            <label>ഈ പരീക്ഷ/കൾക്ക് പി.ഡി. അക്കൗണ്ടിൽ നിന്ന് നിങ്ങൾക്ക് അലോട്ട്മെന്റ് ലഭിച്ചിട്ടുണ്ടോ?</label>
+            <div style="margin-top: 10px;">
+                <input type="radio" name="2024_Mar_Status" value="Yes" onchange="toggle('2024_Mar', true)" required> ഉണ്ട്
+                <input type="radio" name="2024_Mar_Status" value="No" onchange="toggle('2024_Mar', false)"> ഇല്ല
+            </div>
+
+            <div id="2024_Mar" class="conditional-section">
+                <h3>പരീക്ഷാ നടത്തിപ്പിന് ചെലവായ തുകയുടെ ഇനം തിരിച്ചുള്ള കണക്ക്</h3>
+                <label>1. കണ്ടിൻജൻസി ഇനത്തിൽ ചെലവാക്കിയ മൊത്തം തുക.:</label>
+                <input type="number" name="2024_Mar_Contingency" class="calc-2024_Mar" oninput="calc('2024_Mar')" min="0" step="0.01">
+
+                <label>2. നൈറ്റ് വാച്ച്മാനുള്ള പ്രതിഫലത്തിനായി ചെലവഴിച്ച മൊത്തം തുക.:</label>
+                <input type="number" name="2024_Mar_Remuneration" class="calc-2024_Mar" oninput="calc('2024_Mar')" min="0" step="0.01">
+
+                <label>3. അധ്യാപകർക്ക് നൽകേണ്ട പ്രതിഫലത്തിനായി ആവശ്യമായ മൊത്തം തുക (ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഡെപ്യൂട്ടി ചീഫ് സൂപ്പരിന്റണ്ടന്റ്, ഇൻവിജിലേറ്റർ, ഇൻ്റേണൽ, എക്സ്റ്റേണൽ തുടങ്ങിയവർക്ക്).:</label>
+                <input type="number" name="2024_Mar_Duty" class="calc-2024_Mar" oninput="calc('2024_Mar')" min="0" step="0.01">
+
+                <label>4. TA/DA-യ്‌ക്കായി ആവശ്യമായ ആകെ തുക:</label>
+                <input type="number" name="2024_Mar_TADA" class="calc-2024_Mar" oninput="calc('2024_Mar')" min="0" step="0.01">
+
+                <div class="total-display">
+                    <span>5. ആകെ ചെലവ്:</span> <span id="total_2024_Mar">₹0.00</span>
+                </div>
+                <input type="hidden" name="2024_Mar_GrandTotal" id="val_2024_Mar">
+            </div>
+        </div>
+
+        <button type="submit">ഡാറ്റ സമർപ്പിക്കുക (Submit)</button>
+        <p id="message" style="text-align:center; font-weight:bold;"></p>
+    </form>
+</div>
+
+<script>
+    // *****************************************************
+    // 1. DATA (School Info)
+    // *****************************************************
+    const schoolData = [
+        { district: "Kozhikode", code: "7001", name: "Govt HSS School A" },
+        { district: "Kozhikode", code: "7002", name: "St. Mary's School B" },
+        { district: "Malappuram", code: "8005", name: "Crescent HS School C" },
+        { district: "Malappuram", code: "8006", name: "KV Malappuram" },
+        { district: "Thrissur", code: "4010", name: "Sree Ram HSS" }
+    ];
+
+    // *****************************************************
+    // 2. DROPDOWN LOGIC (Cascading)
+    // *****************************************************
+    const dSelect = document.getElementById('district');
+    const cSelect = document.getElementById('schoolCode');
+    const nSelect = document.getElementById('schoolName');
+    
+    // Populate Districts
+    const dists = [...new Set(schoolData.map(d => d.district))].sort();
+    dists.forEach(d => {
+        let op = document.createElement('option'); op.value = d; op.innerText = d;
+        dSelect.appendChild(op);
+    });
+    // Add Placeholder
+    dSelect.insertBefore(new Option("-- ജില്ല തിരഞ്ഞെടുക്കുക --", "", true, true), dSelect.firstChild);
+
+    dSelect.addEventListener('change', () => {
+        cSelect.innerHTML = '<option value="">-- സ്കൂൾ കോഡ് തിരഞ്ഞെടുക്കുക --</option>';
+        nSelect.innerHTML = '<option value="">-- സ്കൂളിൻ്റെ പേര് തിരഞ്ഞെടുക്കുക --</option>';
+        const filtered = schoolData.filter(x => x.district === dSelect.value);
+        [...new Set(filtered.map(x => x.code))].sort().forEach(c => {
+            cSelect.appendChild(new Option(c, c));
+        });
+    });
+
+    cSelect.addEventListener('change', () => {
+        nSelect.innerHTML = '<option value="">-- സ്കൂളിൻ്റെ പേര് തിരഞ്ഞെടുക്കുക --</option>';
+        const filtered = schoolData.filter(x => x.district === dSelect.value && x.code === cSelect.value);
+        filtered.forEach(s => {
+            nSelect.appendChild(new Option(s.name, s.name));
+            nSelect.value = s.name; // Auto-select name
+        });
+    });
+
+    // *****************************************************
+    // 3. TOGGLE VISIBILITY
+    // *****************************************************
+    window.toggle = function(id, show) {
+        const div = document.getElementById(id);
+        const inputs = div.querySelectorAll('input');
+        if(show) {
+            div.style.display = 'block';
+            inputs.forEach(i => i.required = true);
+        } else {
+            div.style.display = 'none';
+            inputs.forEach(i => { 
+                i.required = false; 
+                if(i.type === "number" || i.type === "hidden") i.value = '';
+            });
+            document.getElementById('total_'+id).innerText = "₹0.00";
+            document.getElementById('val_'+id).value = "0";
+        }
+    };
+
+    // *****************************************************
+    // 4. CALCULATION LOGIC
+    // *****************************************************
+    window.calc = function(id) {
+        const inputs = document.querySelectorAll('.calc-' + id);
+        let sum = 0;
+        inputs.forEach(inp => { sum += parseFloat(inp.value) || 0; });
+        document.getElementById('total_'+id).innerText = "₹" + sum.toFixed(2);
+        document.getElementById('val_'+id).value = sum.toFixed(2);
+    };
+
+    // *****************************************************
+    // 5. GOOGLE SHEET SUBMISSION
+    // *****************************************************
+    document.getElementById('submissionForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.querySelector('button[type="submit"]');
+        const msg = document.getElementById('message');
+        
+        btn.innerText = "ഡാറ്റ സമർപ്പിക്കുന്നു... (Submitting)";
+        btn.classList.add('loading');
+        msg.innerText = "";
+        
+        // IMPORTANT: PASTE YOUR GOOGLE SCRIPT URL HERE
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwEkYvmVHDbeFmLDOmNySiGXlcPQlKPXzYwrLWtq2IxIbdwP4kMMTZoyqKqnEmV4oVELA/exec';
+
+        const formData = new FormData(e.target);
+        
+        fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+            msg.innerText = "ഡാറ്റ വിജയകരമായി സമർപ്പിച്ചു! (Successfully Submitted)";
+            msg.style.color = "green";
+            e.target.reset();
+            // Reset Dropdowns
+            cSelect.innerHTML = '<option value="">-- സ്കൂൾ കോഡ് തിരഞ്ഞെടുക്കുക --</option>';
+            nSelect.innerHTML = '<option value="">-- സ്കൂളിൻ്റെ പേര് തിരഞ്ഞെടുക്കുക --</option>';
+            // Hide all conditional sections
+            document.querySelectorAll('.conditional-section').forEach(d => d.style.display='none');
+            
+            btn.innerText = "ഡാറ്റ സമർപ്പിക്കുക (Submit)";
+            btn.classList.remove('loading');
+        })
+        .catch(error => {
+            msg.innerText = "തടസ്സം നേരിട്ടു. വീണ്ടും ശ്രമിക്കുക. (Error!)";
+            msg.style.color = "red";
+            btn.innerText = "വീണ്ടും ശ്രമിക്കുക (Retry)";
+            btn.classList.remove('loading');
+        });
+    });
+</script>
+</body>
+</html>
